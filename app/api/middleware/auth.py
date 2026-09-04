@@ -40,7 +40,8 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
         if not _AUTH_ENABLED:
             return await call_next(request)
 
-        if request.url.path in _PUBLIC_PATHS:
+        path = request.url.path
+        if path in _PUBLIC_PATHS or path.rstrip("/") in _PUBLIC_PATHS or path in {"/api", "/api/index"}:
             return await call_next(request)
 
         api_key = request.headers.get("X-API-Key", "")

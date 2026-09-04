@@ -2,6 +2,7 @@
 FastAPI application instance. Mounts all routers and runs startup configuration.
 Run locally with: uvicorn app.api.main:app --reload
 """
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -27,21 +28,23 @@ async def lifespan(app: FastAPI):
     except Exception as exc:
         logger.error("Database init failed: %s", exc)
 
-    # Start proactive scheduler
-    try:
-        from app.proactive.scheduler import start_scheduler
-        start_scheduler()
-    except Exception as exc:
-        logger.error("Proactive scheduler failed to start: %s", exc)
+    # Start proactive scheduler (skip in serverless environments)
+    if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+        try:
+            from app.proactive.scheduler import start_scheduler
+            start_scheduler()
+        except Exception as exc:
+            logger.error("Proactive scheduler failed to start: %s", exc)
 
     yield
 
     # Graceful shutdown
-    try:
-        from app.proactive.scheduler import stop_scheduler
-        stop_scheduler()
-    except Exception:
-        pass
+    if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+        try:
+            from app.proactive.scheduler import stop_scheduler
+            stop_scheduler()
+        except Exception:
+            pass
 
     logger.info("Shinzo AI shutting down")
 
@@ -65,6 +68,8 @@ app.include_router(messages.router)
 
 
 @app.get("/")
+@app.get("/api")
+@app.get("/api/index")
 def root():
     return {
         "status": "online",
