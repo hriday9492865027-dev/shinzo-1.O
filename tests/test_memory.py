@@ -52,6 +52,7 @@ def test_filter_candidates_removes_low_scores():
 
 def test_memory_db_init_and_model():
     import uuid
+
     from app.memory.db import get_session, init_db
     from app.memory.models import User
 
@@ -70,6 +71,7 @@ def test_memory_db_init_and_model():
 def test_store_and_retrieve_memory():
     """Integration: store a memory and verify it's retrievable."""
     import uuid
+
     from app.memory.db import get_session, init_db
     from app.memory.models import User
     from app.memory.store import store_memory

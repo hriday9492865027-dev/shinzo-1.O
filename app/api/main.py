@@ -63,3 +63,15 @@ app.include_router(chat.router)
 app.include_router(proactive.router)
 app.include_router(messages.router)
 
+
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "service": "Shinzo AI",
+        "version": "0.2.0",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+

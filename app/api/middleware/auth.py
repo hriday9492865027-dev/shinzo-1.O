@@ -23,7 +23,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 logger = logging.getLogger(__name__)
 
 # Routes that skip auth
-_PUBLIC_PATHS = {"/health", "/docs", "/openapi.json", "/redoc"}
+_PUBLIC_PATHS = {"/", "/health", "/docs", "/openapi.json", "/redoc"}
 
 # Read from env at import time — secrets never in config objects
 _API_KEY = os.environ.get("API_KEY", "")

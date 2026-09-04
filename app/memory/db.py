@@ -14,6 +14,7 @@ Call `init_db()` once at startup (done in app/api/main.py lifespan).
 """
 from __future__ import annotations
 
+import os
 from collections.abc import Generator
 from contextlib import contextmanager
 
@@ -40,10 +41,15 @@ def get_engine():
         if settings.database_url.startswith("sqlite"):
             @event.listens_for(_engine, "connect")
             def set_sqlite_pragma(dbapi_conn, _connection_record):
-                cursor = dbapi_conn.cursor()
-                cursor.execute("PRAGMA journal_mode=WAL")
-                cursor.execute("PRAGMA foreign_keys=ON")
-                cursor.close()
+                try:
+                    cursor = dbapi_conn.cursor()
+                    cursor.execute("PRAGMA foreign_keys=ON")
+                    # In serverless environments, WAL may not be supported on /tmp
+                    if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+                        cursor.execute("PRAGMA journal_mode=WAL")
+                    cursor.close()
+                except Exception:
+                    pass
 
     return _engine
 

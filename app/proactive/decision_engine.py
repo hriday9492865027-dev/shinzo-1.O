@@ -14,7 +14,7 @@ Returns a ProactiveDecision with INITIATE or DO_NOTHING + reason.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime, time, timedelta
 
 from app.core.config import get_settings
 from app.proactive.quiet_hours import is_quiet_hours
@@ -36,6 +36,7 @@ def evaluate(
     pause_mode_active: bool,
     follow_up_hook: str = "",      # set if there's something worth following up on
     message_count: int = 0,
+    now: datetime | time | None = None,
 ) -> ProactiveDecision:
     """
     Evaluate whether Shinzo should initiate a message.
@@ -48,7 +49,7 @@ def evaluate(
     if pause_mode_active:
         return ProactiveDecision(False, "User set pause mode — no messages.")
 
-    if is_quiet_hours(settings.quiet_hours_start, settings.quiet_hours_end):
+    if is_quiet_hours(settings.quiet_hours_start, settings.quiet_hours_end, now=now):
         return ProactiveDecision(False, "Quiet hours active.")
 
     if recent_proactive_count >= MAX_MESSAGES_PER_DAY:

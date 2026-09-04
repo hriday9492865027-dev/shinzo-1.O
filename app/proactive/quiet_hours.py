@@ -17,7 +17,7 @@ def _parse_time(t: str) -> time:
     return time(int(h), int(m))
 
 
-def is_quiet_hours(start: str, end: str, now: datetime | None = None) -> bool:
+def is_quiet_hours(start: str, end: str, now: datetime | time | None = None) -> bool:
     """
     Return True if the current time falls within the quiet hours window.
 
@@ -25,9 +25,11 @@ def is_quiet_hours(start: str, end: str, now: datetime | None = None) -> bool:
     `now` is injectable for testing; defaults to current local time.
     """
     if now is None:
-        now = datetime.now()
-
-    current = now.time().replace(second=0, microsecond=0)
+        current = datetime.now().time().replace(second=0, microsecond=0)
+    elif isinstance(now, datetime):
+        current = now.time().replace(second=0, microsecond=0)
+    else:
+        current = now.replace(second=0, microsecond=0)
     start_t = _parse_time(start)
     end_t = _parse_time(end)
 

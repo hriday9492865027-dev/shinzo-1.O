@@ -4,9 +4,17 @@ Reads environment variables (see .env.example) into a typed, validated Settings 
 Every other module should import `get_settings()` rather than reading os.environ directly,
 so config has one source of truth and is easy to override in tests.
 """
+import os
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _get_default_database_url() -> str:
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("LAMBDA_TASK_ROOT"):
+        return "sqlite:////tmp/shinzo.db"
+    return "sqlite:///./shinzo.db"
 
 
 class Settings(BaseSettings):
@@ -15,7 +23,7 @@ class Settings(BaseSettings):
     shinzo_env: str = "development"
 
     # Database
-    database_url: str = "sqlite:///./shinzo.db"
+    database_url: str = Field(default_factory=_get_default_database_url)
 
     # LLM provider
     llm_provider: str = "mock"  # "mock" | "local_hf"

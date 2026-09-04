@@ -72,11 +72,12 @@ def test_decision_do_nothing_when_disabled(monkeypatch):
 
 
 def test_decision_do_nothing_pause_mode():
-    from datetime import UTC, datetime, timedelta
+    from datetime import UTC, datetime, time, timedelta
 
     from app.proactive.decision_engine import evaluate
 
     result = evaluate(
+        now=time(14, 0),
         last_message_at=datetime.now(UTC) - timedelta(days=5),
         recent_proactive_count=0,
         pause_mode_active=True,
@@ -87,11 +88,12 @@ def test_decision_do_nothing_pause_mode():
 
 
 def test_decision_do_nothing_frequency_guard():
-    from datetime import UTC, datetime, timedelta
+    from datetime import UTC, datetime, time, timedelta
 
     from app.proactive.decision_engine import evaluate
 
     result = evaluate(
+        now=time(14, 0),
         last_message_at=datetime.now(UTC) - timedelta(days=5),
         recent_proactive_count=5,  # over limit
         pause_mode_active=False,
