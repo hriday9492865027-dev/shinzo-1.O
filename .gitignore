@@ -33,3 +33,7 @@ training/adapters/
 # Test cache
 .pytest_cache/
 .ruff_cache/
+
+# Vercel
+.vercel/
+
