@@ -1,0 +1,50 @@
+# --- Core web framework ---
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.6
+pydantic>=2.9.2
+pydantic-settings>=2.5.2
+
+# --- AI / ML runtime ---
+# torch: install separately with the appropriate index URL for your CUDA version
+# e.g.: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.6.0
+transformers>=4.44.2
+accelerate>=0.34.2
+
+# --- Fine-tuning (installed when Milestone 6 begins) ---
+trl>=0.10.1
+peft>=0.12.0
+
+# --- Data ---
+datasets>=2.21.0
+pandas>=2.2.2
+
+# --- Memory / storage ---
+sqlalchemy>=2.0.35
+
+# --- Semantic search ---
+sentence-transformers>=3.1.1
+faiss-cpu>=1.8.0
+
+# --- Language detection ---
+lingua-language-detector>=2.0.2
+
+# --- Scheduling ---
+apscheduler>=3.10.4
+
+# --- Security ---
+argon2-cffi>=23.1.0
+slowapi>=0.1.9
+python-jose[cryptography]>=3.3.0
+
+# --- Notifications (Phase 2) ---
+pywebpush>=2.0.1
+
+# --- Testing ---
+pytest>=8.3.3
+pytest-asyncio>=0.24.0
+httpx>=0.27.2
+
+# --- Code quality ---
+ruff>=0.6.8
+

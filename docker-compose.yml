@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  shinzo-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shinzo-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      SHINZO_ENV: development
+      LLM_PROVIDER: mock                       # swap to local_hf once model is available
+      DATABASE_URL: sqlite:///./data/shinzo.db
+      PROACTIVE_ENABLED: "true"
+      QUIET_HOURS_START: "22:00"
+      QUIET_HOURS_END: "08:00"
+      API_AUTH_ENABLED: "false"                # set to "true" + API_KEY for production
+      # API_KEY: your-secret-key-here          # uncomment when enabling auth
+      LOG_LEVEL: INFO
+    volumes:
+      # Persist SQLite DB and FAISS indexes between container restarts
+      - shinzo-data:/app/data
+      - shinzo-indexes:/app/shinzo_faiss_indexes
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  shinzo-data:
+    driver: local
+  shinzo-indexes:
+    driver: local
+
+# ── Future services (uncomment when needed) ───────────────────────────────────
+# postgres:
+#   image: postgres:16-alpine
+#   environment:
+#     POSTGRES_DB: shinzo
+#     POSTGRES_USER: shinzo
+#     POSTGRES_PASSWORD: changeme
+#   volumes:
+#     - pg-data:/var/lib/postgresql/data
+#   ports:
+#     - "5432:5432"
+#
+# volumes:
+#   pg-data:

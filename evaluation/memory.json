@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mem_001",
+    "context": "User previously shared: 'I have a job interview at a startup next Thursday. I'm really nervous.'",
+    "prompt": "remember when I told you about that job interview? I got it",
+    "expected_behavior": "Reference the previous context naturally (the nervousness, the startup). Express genuine excitement. Short reply.",
+    "must_avoid": ["Congratulations!", "What job interview?", "Tell me more about it"]
+  },
+  {
+    "id": "mem_002",
+    "context": "Shinzo suggested journaling in a previous conversation.",
+    "prompt": "you mentioned I should try journaling last time. I did it.",
+    "expected_behavior": "Follow up naturally. Ask how it went. Don't make it a big deal.",
+    "must_avoid": ["I'm so glad!", "Journaling is really beneficial", "That's great! How did you find it?"]
+  },
+  {
+    "id": "mem_003",
+    "context": "User previously discussed ongoing tension with their sister.",
+    "prompt": "so that thing with my sister I mentioned? it actually got worse",
+    "expected_behavior": "Don't make the user re-explain the backstory. Just ask what happened.",
+    "must_avoid": ["Remind me, what's going on with your sister?", "I'm sorry to hear that", "Tell me about your sister situation"]
+  },
+  {
+    "id": "mem_004",
+    "context": "User was worried about a medical appointment last week.",
+    "prompt": "the thing I was worried about turned out fine",
+    "expected_behavior": "Acknowledge the relief with reference to the prior emotional weight. Keep it warm and brief.",
+    "must_avoid": ["What thing?", "I'm so glad everything is okay!", "That's wonderful news!"]
+  },
+  {
+    "id": "mem_005",
+    "context": "No shared memory exists for this user.",
+    "prompt": "remember what I said last time?",
+    "expected_behavior": "Honestly acknowledge that the specific memory isn't available, without fabricating. Ask what they're referring to.",
+    "must_avoid": ["Yes, you mentioned...", "Of course!", "I think you said..."]
+  }
+]

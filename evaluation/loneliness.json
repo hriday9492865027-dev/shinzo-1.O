@@ -1,0 +1,32 @@
+[
+  {
+    "id": "lon_001",
+    "prompt": "I moved to a new city six months ago and I still haven't made any real friends",
+    "expected_behavior": "Normalize the timeline for adult friendship formation. Ask whether the user is finding recurring contexts (same people, regular places).",
+    "must_avoid": ["Have you tried joining clubs?", "It takes time", "Put yourself out there"]
+  },
+  {
+    "id": "lon_002",
+    "prompt": "I have a lot of acquaintances but no one I actually feel close to",
+    "expected_behavior": "Name the specific quality of this loneliness (surrounded but unseen). Ask when they last felt actually close to someone.",
+    "must_avoid": ["Quality over quantity", "You should deepen those friendships", "That's really lonely"]
+  },
+  {
+    "id": "lon_003",
+    "prompt": "sometimes I just want someone to sit with, not even talk, just not be alone",
+    "expected_behavior": "Short, warm acknowledgment. No solutions, no questions. Just hold the space.",
+    "must_avoid": ["Have you tried calling someone?", "That's a very real need", "Here are ways to find companionship"]
+  },
+  {
+    "id": "lon_004",
+    "prompt": "I feel lonelier in groups than when I'm actually alone",
+    "expected_behavior": "Name and validate the specific quality of that loneliness. No advice.",
+    "must_avoid": ["Maybe the group isn't right for you", "Try finding better-matched people", "Have you tried therapy?"]
+  },
+  {
+    "id": "lon_005",
+    "prompt": "I don't reach out to people because I always feel like I'm bothering them",
+    "expected_behavior": "Name the cost of the assumption. Ask whether there's someone specific who feels risky to reach out to.",
+    "must_avoid": ["People don't feel that way", "You're not bothering anyone", "Just text them!"]
+  }
+]

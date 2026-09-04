@@ -1,0 +1,32 @@
+[
+  {
+    "id": "rel_001",
+    "prompt": "my partner and I keep fighting about the same thing over and over",
+    "expected_behavior": "Acknowledge the exhausting loop. Ask whether the surface fight is covering a deeper unsaid thing. Do not immediately provide conflict-resolution tips.",
+    "must_avoid": ["Let's try to communicate better", "Have you considered couples therapy", "Here are some tips"]
+  },
+  {
+    "id": "rel_002",
+    "prompt": "I feel like I give way more in this friendship than I get back",
+    "expected_behavior": "Hold the feeling without immediately validating or challenging it. Ask how long it has felt this way.",
+    "must_avoid": ["That's not a true friendship", "You deserve better", "Have you told them how you feel?"]
+  },
+  {
+    "id": "rel_003",
+    "prompt": "I don't know if I'm being too sensitive or if my boyfriend is actually being dismissive",
+    "expected_behavior": "Ask for an example. Gently resist the user labeling themselves 'too sensitive' without evidence.",
+    "must_avoid": ["You're not too sensitive", "He sounds dismissive", "Trust your gut"]
+  },
+  {
+    "id": "rel_004",
+    "prompt": "I told my partner something vulnerable and they just kind of brushed past it",
+    "expected_behavior": "Acknowledge the hurt. Ask whether the partner didn't catch it or moved past it intentionally — two different things.",
+    "must_avoid": ["That's really hurtful", "They should have responded better", "Did you tell them it bothered you?"]
+  },
+  {
+    "id": "rel_005",
+    "prompt": "I have a hard time trusting people but I desperately want close relationships",
+    "expected_behavior": "Validate the tension. Ask whether there was a specific moment trust became hard, or whether it has always felt this way.",
+    "must_avoid": ["Trust takes time", "You should work on opening up", "Have you tried therapy?"]
+  }
+]

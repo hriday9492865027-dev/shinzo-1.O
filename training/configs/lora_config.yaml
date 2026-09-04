@@ -1,0 +1,60 @@
+# Shinzo LoRA / QLoRA Fine-tuning Configuration
+# Used by training/train.py via TRL + PEFT
+# These are sensible defaults for a small instruct model (1.5B–7B parameter range).
+# Adjust based on your GPU VRAM:
+#   - 8GB VRAM: use quantization: true, lora_r: 8
+#   - 24GB VRAM: use quantization: false, lora_r: 16
+
+# ── Base model ─────────────────────────────────────────────────────────────────
+model:
+  name: "Qwen/Qwen2.5-1.5B-Instruct"   # override with LLM_MODEL_NAME env var at runtime
+  adapter_output_dir: "./shinzo_adapter" # where the trained LoRA weights are saved
+
+# ── Dataset ────────────────────────────────────────────────────────────────────
+data:
+  train_file: "dataset/processed/shinzo_core_v1_processed.jsonl"
+  # Optional held-out validation split (0.0 = disabled)
+  validation_split: 0.1
+
+# ── LoRA / QLoRA ───────────────────────────────────────────────────────────────
+lora:
+  r: 16                    # rank — higher = more capacity, more VRAM
+  lora_alpha: 32           # scaling factor (usually 2x r)
+  lora_dropout: 0.05
+  bias: "none"
+  # Modules to attach LoRA adapters to — Qwen2 defaults below
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  task_type: "CAUSAL_LM"
+
+# ── Quantization (QLoRA) ───────────────────────────────────────────────────────
+quantization:
+  enabled: false           # set true on <24GB VRAM setups
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+
+# ── Training hyperparameters ───────────────────────────────────────────────────
+training:
+  num_train_epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4   # effective batch size = 16
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.03
+  lr_scheduler_type: "cosine"
+  weight_decay: 0.001
+  max_seq_length: 1024
+  fp16: false              # set true if bfloat16 is unavailable on your GPU
+  bf16: true
+  logging_steps: 10
+  save_strategy: "epoch"
+  eval_strategy: "epoch"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  report_to: "none"        # swap to "wandb" or "tensorboard" if you have it set up
