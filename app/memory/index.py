@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 
 import numpy as np
@@ -21,7 +22,11 @@ import numpy as np
 from app.memory.embeddings import EMBEDDING_DIM
 
 logger = logging.getLogger(__name__)
-INDEX_DIR = Path("shinzo_faiss_indexes")
+
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    INDEX_DIR = Path("/tmp/shinzo_faiss_indexes")
+else:
+    INDEX_DIR = Path("shinzo_faiss_indexes")
 
 
 def _faiss():
@@ -34,7 +39,10 @@ def _faiss():
 
 
 def _index_path(user_id: str) -> tuple[Path, Path]:
-    INDEX_DIR.mkdir(exist_ok=True)
+    try:
+        INDEX_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception as exc:
+        logger.warning("Could not create index dir %s: %s", INDEX_DIR, exc)
     return INDEX_DIR / f"{user_id}.index", INDEX_DIR / f"{user_id}.ids.json"
 
 

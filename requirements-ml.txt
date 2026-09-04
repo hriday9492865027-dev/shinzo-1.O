@@ -1,0 +1,17 @@
+# Heavy ML / GPU / Training / Local inference dependencies
+# Install with: pip install -r requirements-ml.txt
+-r requirements.txt
+
+# --- Deep Learning & Fine-tuning ---
+torch>=2.4.0
+transformers>=4.44.2
+accelerate>=0.34.2
+trl>=0.10.1
+peft>=0.12.0
+
+# --- Vector search & Dataset tools ---
+datasets>=2.21.0
+pandas>=2.2.2
+sentence-transformers>=3.1.1
+faiss-cpu>=1.8.0
+lingua-language-detector>=2.0.2
