@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: shinzo-ai
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+
+    # Render persistent disk — keeps SQLite DB and FAISS indexes across deploys
+    disk:
+      name: shinzo-data
+      mountPath: /data
+      sizeGB: 1
+
+    envVars:
+      - key: SHINZO_ENV
+        value: production
+      - key: LLM_PROVIDER
+        value: mock
+      - key: DATABASE_URL
+        value: sqlite:////data/shinzo.db
+      - key: API_AUTH_ENABLED
+        value: "false"
+      - key: PROACTIVE_ENABLED
+        value: "true"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PORT
+        value: "8000"
+
+    healthCheckPath: /health
+    autoDeploy: true

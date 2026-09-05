@@ -12,8 +12,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 def _get_default_database_url() -> str:
+    # Vercel / AWS Lambda — only /tmp is writable
     if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("LAMBDA_TASK_ROOT"):
         return "sqlite:////tmp/shinzo.db"
+    # Render — persistent disk mounted at /data
+    if os.path.isdir("/data"):
+        return "sqlite:////data/shinzo.db"
     return "sqlite:///./shinzo.db"
 
 

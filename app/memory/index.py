@@ -25,6 +25,8 @@ logger = logging.getLogger(__name__)
 
 if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
     INDEX_DIR = Path("/tmp/shinzo_faiss_indexes")
+elif os.path.isdir("/data"):
+    INDEX_DIR = Path("/data/shinzo_faiss_indexes")
 else:
     INDEX_DIR = Path("shinzo_faiss_indexes")
 
