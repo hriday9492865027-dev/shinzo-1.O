@@ -6,7 +6,4 @@ root_path = Path(__file__).parent.parent.resolve()
 if str(root_path) not in sys.path:
     sys.path.insert(0, str(root_path))
 
-from app.api.main import app  # noqa: E402
-
-# Vercel looks for 'app' or 'handler'
-handler = app
+from app.api.main import app  # noqa: E402, F401
