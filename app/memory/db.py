@@ -32,13 +32,18 @@ def get_engine():
     global _engine
     if _engine is None:
         settings = get_settings()
-        connect_args = {}
-        if settings.database_url.startswith("sqlite"):
-            # Enable WAL mode and foreign keys for SQLite
-            connect_args = {"check_same_thread": False}
-        _engine = create_engine(settings.database_url, connect_args=connect_args)
+        db_url = settings.database_url
+        if db_url.startswith("sqlite") and not db_url.startswith("sqlite:////tmp"):
+            if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or not os.access(".", os.W_OK):
+                db_url = "sqlite:////tmp/shinzo.db"
 
-        if settings.database_url.startswith("sqlite"):
+        connect_args = {}
+        if db_url.startswith("sqlite"):
+            # Enable foreign keys for SQLite
+            connect_args = {"check_same_thread": False}
+        _engine = create_engine(db_url, connect_args=connect_args)
+
+        if db_url.startswith("sqlite"):
             @event.listens_for(_engine, "connect")
             def set_sqlite_pragma(dbapi_conn, _connection_record):
                 try:
