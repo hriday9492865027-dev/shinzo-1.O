@@ -18,7 +18,12 @@ def _get_default_database_url() -> str:
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env" if os.path.exists(".env") else None,
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
 
     shinzo_env: str = "development"
 
